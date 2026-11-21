@@ -1,0 +1,75 @@
+준비: Nav2·AMCL 기다리는 중…
+  준비 완료(12초)
+[21:31:17] 1/20 내과
+      0.0s 상태  
+      0.4s 상태 moving 내과
+     56.4s 상태 arrived 내과
+     61.3s 상태 returning 초기 위치
+    126.1s 상태 aligning 초기 위치
+    145.3s 상태 idle 
+   → 도착 X(32.6cm, 56.4s) · 복귀 X(34.0cm, 0.2°, 84.1s) · 전체 X · 목표 지점 오차 초과 · 초기 위치 오차 초과
+[21:33:46] 2/20 외과
+      0.0s 상태 idle 
+      1.0s 상태 moving 외과
+    102.3s 상태 arrived 외과
+    107.4s 상태 returning 초기 위치
+    226.7s 상태 aligning 초기 위치
+    247.8s 상태 idle 
+   → 도착 X(30.5cm, 102.3s) · 복귀 X(35.6cm, 0.9°, 140.4s) · 전체 X · 목표 지점 오차 초과 · 초기 위치 오차 초과
+[21:37:58] 3/20 소아청소년과
+      0.0s 상태 idle 
+      0.4s 상태 moving 소아청소년과
+    206.6s 상태 arrived 소아청소년과
+    211.5s 상태 returning 초기 위치
+    390.8s 상태 aligning 초기 위치
+    409.0s 상태 idle 
+   → 도착 O(11.9cm, 206.6s) · 복귀 X(35.1cm, 0.5°, 197.5s) · 전체 X · 초기 위치 오차 초과
+[21:44:51] 4/20 산부인과
+      0.0s 상태 idle 
+      1.0s 상태 moving 산부인과
+     72.3s 상태 arrived 산부인과
+     77.4s 상태 returning 초기 위치
+    169.9s 상태 aligning 초기 위치
+    188.3s 상태 idle 
+   → 도착 O(20.8cm, 72.3s) · 복귀 X(34.1cm, 0.9°, 110.9s) · 전체 X · 초기 위치 오차 초과
+[21:48:04] 5/20 마취통증의학과
+      0.0s 상태 idle 
+      0.6s 상태 moving 마취통증의학과
+    223.1s 상태 arrived 마취통증의학과
+    228.1s 상태 returning 초기 위치
+    461.2s 상태 aligning 초기 위치
+    478.9s 상태 idle 
+   → 도착 O(11.1cm, 223.1s) · 복귀 X(38.2cm, -0.2°, 250.7s) · 전체 X · 초기 위치 오차 초과
+[21:56:06] 6/20 내과
+      0.0s 상태 idle 
+      0.6s 상태 moving 내과
+     55.3s 상태 arrived 내과
+     60.4s 상태 returning 초기 위치
+    131.3s 상태 aligning 초기 위치
+    150.0s 상태 idle 
+   → 도착 X(37.1cm, 55.3s) · 복귀 X(37.6cm, 0.1°, 89.6s) · 전체 X · 목표 지점 오차 초과 · 초기 위치 오차 초과
+[21:58:40] 7/20 외과
+      0.0s 상태 idle 
+      0.6s 상태 moving 외과
+    102.3s 상태 arrived 외과
+    107.4s 상태 returning 초기 위치
+    226.1s 상태 aligning 초기 위치
+    244.3s 상태 idle 
+   → 도착 O(18.9cm, 102.3s) · 복귀 X(34.5cm, 0.3°, 137.0s) · 전체 X · 초기 위치 오차 초과
+[22:02:49] 8/20 소아청소년과
+      0.0s 상태 idle 
+      0.6s 상태 moving 소아청소년과
+    155.3s 상태 arrived 소아청소년과
+    160.4s 상태 returning 초기 위치
+    328.5s 상태 aligning 초기 위치
+    346.8s 상태 idle 
+   → 도착 O(13.5cm, 155.3s) · 복귀 X(34.9cm, -0.1°, 186.4s) · 전체 X · 초기 위치 오차 초과
+Traceback (most recent call last):
+  File "/mnt/ssd/projects/myproject/sim/sim_exp2.py", line 368, in <module>
+    main()
+  File "/mnt/ssd/projects/myproject/sim/sim_exp2.py", line 364, in main
+    Evaluator(a).run()
+  File "/mnt/ssd/projects/myproject/sim/sim_exp2.py", line 276, in run
+    time.sleep(3)
+KeyboardInterrupt
+terminate called without an active exception
