@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    linear_acceleration_stddev: 0.02
+    angular_velocity_stddev: 0.01
+    magnetic_field_stddev: 0.00000327486
+    orientation_stddev: 0.00125
+    publish_rate_hz: 100.0   # 2026-11-11: IMU 발행 주기(기존 코드 고정 1ms ≈ 1000Hz)

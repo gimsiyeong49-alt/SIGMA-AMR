@@ -1,0 +1,29 @@
+[Unit]
+Description=AGV 브링업 자동 시작 (장치권한·팬·전원모드 + agv_bringup)
+After=network-online.target local-fs.target
+Wants=network-online.target
+# ※ RequiresMountsFor 는 쓰지 않는다: 부팅 시 NVMe 인식이 fstab device-timeout 보다 늦으면
+#   의존성 실패로 서비스가 아예 시작되지 않았음(2026-09-30). 대신 아래 ExecStartPre 에서 직접 기다린다.
+# 재시도 제한 없음(장치가 늦게 붙어도 계속 재시도)
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=wjs
+Group=wjs
+# 전원 모드 ID (3 = MODE_30W_ALL, 8코어). MAXN(0)에서는 모터 구동 시 젯슨이 꺼졌음. 2026-11-12: 4(6코어) → 3(CPU 포화 해소, 주행 시험에서 꺼짐 없음)
+Environment=AGV_POWER_MODE=3
+# 0) SSD 마운트 대기(최대 90초, 필요하면 직접 마운트) — 스크립트가 SSD 에 있으므로 반드시 먼저
+ExecStartPre=+/bin/sh -c 'for i in $(seq 1 90); do if mountpoint -q /mnt/ssd && [ -x /mnt/ssd/projects/myproject/scripts/boot_prep_root.sh ]; then exit 0; fi; [ -b /dev/nvme0n1p1 ] && mount /mnt/ssd 2>/dev/null; sleep 1; done; echo "SSD(/mnt/ssd) 마운트 대기 90초 초과" >&2; exit 1'
+# 1) '+' = root 로 실행(장치 권한·팬·전원모드)
+ExecStartPre=+/mnt/ssd/projects/myproject/scripts/boot_prep_root.sh
+# 2) 브링업 (wjs). 로그는 스크립트가 logs/bringup.log 에 직접 남긴다
+ExecStart=/mnt/ssd/projects/myproject/scripts/boot_bringup.sh
+# ros2 launch 는 SIGINT 로 정상 종료
+KillSignal=SIGINT
+TimeoutStopSec=20
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

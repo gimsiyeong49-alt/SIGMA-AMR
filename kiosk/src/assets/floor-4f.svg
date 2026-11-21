@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-150 120 1140 480" preserveAspectRatio="xMidYMid meet">
+  <!-- =====================================================================
+       4F 평면 안내도 — Screenshot.png(4층평면도) 실제 벽 픽셀 좌표 + 7839.jpg
+       안내판 색 코딩 반영. 방은 번호만, 시설은 기호. 좌표계=Screenshot 픽셀.
+       색: 노랑(401~408 실험/연구실), 청록(403 공실), 보라(410~412·414),
+           분홍(417·419·418·416·415·413)  ※ 7839 샘플 기반
+       ===================================================================== -->
+  <style>
+    .bg    { fill:#f4f7fa; }
+    .room  { fill:#e9eef3; stroke:#3a566e; stroke-width:1.4; }
+    .r-y   { fill:#ecd580; }   /* 노랑 */
+    .r-t   { fill:#bfe0d8; }   /* 청록 */
+    .r-p   { fill:#d2bce0; }   /* 보라 */
+    .r-k   { fill:#f3cac6; }   /* 분홍 */
+    .core  { fill:#e2e7ec; stroke:#3a566e; stroke-width:1.4; }
+    .wall  { fill:none; stroke:#22384c; stroke-width:2.2; stroke-linejoin:round; stroke-linecap:round; }
+    .icon  { fill:none; stroke:#5b7085; stroke-width:1.4; stroke-linecap:round; }
+    .wc    { fill:#2f6cb0; }
+    .exit  { fill:#3f9c53; }
+    .hatch { stroke:#ccd5df; stroke-width:1; }
+    .num   { font-family:'Noto Sans KR','Malgun Gothic',sans-serif; font-weight:700; fill:#123044; font-size:17px; text-anchor:middle; }
+    .arrow { fill:#5b7085; }
+    .title1{ font-family:'Noto Sans KR',sans-serif; font-weight:800; fill:#2f6cb0; font-size:150px; }
+    .titleF{ font-family:'Noto Sans KR',sans-serif; font-weight:800; fill:#2f6cb0; font-size:82px; }
+  </style>
+
+  <rect class="bg" x="-150" y="120" width="1140" height="480"/>
+  <text class="title1" x="-140" y="330">4</text>
+  <text class="titleF" x="-52" y="330">F</text>
+
+  <!-- 북측 창측 해칭 -->
+  <g class="hatch">
+    <line x1="140" y1="160" x2="140" y2="193"/><line x1="170" y1="160" x2="170" y2="193"/>
+    <line x1="200" y1="160" x2="200" y2="193"/><line x1="230" y1="160" x2="230" y2="193"/>
+    <line x1="260" y1="160" x2="260" y2="193"/><line x1="290" y1="160" x2="290" y2="193"/>
+    <line x1="320" y1="160" x2="320" y2="193"/><line x1="350" y1="160" x2="350" y2="193"/>
+    <line x1="380" y1="160" x2="380" y2="193"/>
+    <line x1="620" y1="160" x2="620" y2="193"/><line x1="655" y1="160" x2="655" y2="193"/>
+    <line x1="690" y1="160" x2="690" y2="193"/><line x1="725" y1="160" x2="725" y2="193"/>
+    <line x1="760" y1="160" x2="760" y2="193"/><line x1="795" y1="160" x2="795" y2="193"/>
+    <line x1="830" y1="160" x2="830" y2="193"/><line x1="865" y1="160" x2="865" y2="193"/>
+  </g>
+
+  <!-- ===================== 상단 (y195~274) ===================== -->
+  <!-- 좌측 계단 + 비상구 -->
+  <rect class="core" x="86" y="195" width="33" height="79"/>
+  <g class="icon"><line x1="92" y1="214" x2="113" y2="214"/><line x1="92" y1="230" x2="113" y2="230"/><line x1="92" y1="246" x2="113" y2="246"/><line x1="92" y1="262" x2="113" y2="262"/></g>
+  <rect class="exit" x="89" y="197" width="15" height="11" rx="2"/><polygon points="93,199 93,206 99,202.5" fill="#fff"/>
+  <!-- 401~408 -->
+  <rect class="room r-y" x="119" y="195" width="34" height="79"/><text class="num" x="136" y="240">401</text>
+  <rect class="room r-y" x="153" y="195" width="34" height="79"/><text class="num" x="170" y="240">402</text>
+  <rect class="room r-t" x="187" y="195" width="34" height="79"/><text class="num" x="204" y="240">403</text>
+  <rect class="room r-y" x="221" y="195" width="33" height="79"/><text class="num" x="237" y="240">404</text>
+  <rect class="room r-y" x="254" y="195" width="34" height="79"/><text class="num" x="271" y="240">405</text>
+  <rect class="room r-y" x="288" y="195" width="34" height="79"/><text class="num" x="305" y="240">406</text>
+  <rect class="room r-y" x="322" y="195" width="33" height="79"/><text class="num" x="338" y="240">407</text>
+  <rect class="room r-y" x="355" y="195" width="39" height="79"/><text class="num" x="374" y="240">408</text>
+  <!-- 화장실 (파란 남/녀) -->
+  <rect id="room-restroom" class="core" x="394" y="195" width="38" height="79"/>
+  <g class="wc">
+    <circle cx="406" cy="218" r="4"/><rect x="402.5" y="224" width="7" height="12" rx="1.5"/>
+    <circle cx="420" cy="218" r="4"/><polygon points="416,224 424,224 422,236 418,236"/>
+  </g>
+  <!-- 엘리베이터 -->
+  <rect id="room-elevator" class="core" x="432" y="195" width="62" height="79"/>
+  <rect class="icon" x="447" y="215" width="32" height="40"/>
+  <line class="icon" x1="447" y1="215" x2="479" y2="255"/><line class="icon" x1="479" y1="215" x2="447" y2="255"/>
+  <!-- 중앙 계단 + 비상구 -->
+  <rect id="room-stairs" class="core" x="537" y="195" width="53" height="79"/>
+  <g class="icon"><line x1="546" y1="212" x2="581" y2="212"/><line x1="546" y1="227" x2="581" y2="227"/><line x1="546" y1="242" x2="581" y2="242"/><line x1="546" y1="257" x2="581" y2="257"/></g>
+  <rect class="exit" x="556" y="197" width="15" height="11" rx="2"/><polygon points="560,199 560,206 566,202.5" fill="#fff"/>
+  <!-- 410~412 -->
+  <rect class="room r-p" x="590" y="195" width="102" height="79"/><text class="num" x="641" y="240">410</text>
+  <rect class="room r-p" x="692" y="195" width="101" height="79"/><text class="num" x="742" y="240">411</text>
+  <rect class="room r-p" x="793" y="195" width="102" height="79"/><text class="num" x="844" y="240">412</text>
+  <!-- 우측 계단(내부) + 비상구 -->
+  <rect class="core" x="895" y="195" width="34" height="79"/>
+  <g class="icon"><line x1="901" y1="212" x2="923" y2="212"/><line x1="901" y1="227" x2="923" y2="227"/><line x1="901" y1="242" x2="923" y2="242"/><line x1="901" y1="257" x2="923" y2="257"/></g>
+  <rect class="exit" x="899" y="197" width="15" height="11" rx="2"/><polygon points="903,199 903,206 909,202.5" fill="#fff"/>
+  <!-- 우측 외부 계단 -->
+  <rect class="core" x="941" y="195" width="27" height="79"/>
+  <g class="icon"><line x1="946" y1="214" x2="963" y2="214"/><line x1="946" y1="232" x2="963" y2="232"/><line x1="946" y1="250" x2="963" y2="250"/></g>
+
+  <!-- ===================== 하단 (y304~394) ===================== -->
+  <rect class="room r-k" x="107" y="304" width="114" height="90"/><text class="num" x="164" y="353">419</text>
+  <rect class="room r-k" x="221" y="304" width="101" height="90"/><text class="num" x="271" y="353">418</text>
+  <rect class="room r-k" x="322" y="304" width="134" height="90"/><text class="num" x="389" y="353">417</text>
+  <rect class="room r-k" x="456" y="304" width="38"  height="90"/><text class="num" x="475" y="353">416</text>
+  <!-- 로비 개방 494~622 -->
+  <rect class="room r-k" x="622" y="304" width="138" height="90"/><text class="num" x="691" y="353">415</text>
+  <rect class="room r-p" x="760" y="304" width="33"  height="90"/><text class="num" x="776" y="353">414</text>
+  <rect class="room r-k" x="793" y="304" width="141" height="90"/><text class="num" x="863" y="353">413</text>
+  <!-- 우측 계단(하단) -->
+  <rect class="core" x="934" y="304" width="34" height="90"/>
+  <g class="icon"><line x1="940" y1="322" x2="962" y2="322"/><line x1="940" y1="340" x2="962" y2="340"/><line x1="940" y1="358" x2="962" y2="358"/><line x1="940" y1="376" x2="962" y2="376"/></g>
+
+  <!-- ===================== 하부 로비/입구 ===================== -->
+  <rect class="core" x="404" y="394" width="90" height="86"/>
+  <line class="icon" x1="404" y1="394" x2="494" y2="480"/><line class="icon" x1="494" y1="394" x2="404" y2="480"/>
+  <rect class="core" x="622" y="394" width="90" height="86"/>
+  <line class="icon" x1="622" y1="394" x2="712" y2="480"/><line class="icon" x1="712" y1="394" x2="622" y2="480"/>
+  <!-- 입구 화살표 + 비상구 -->
+  <polygon class="arrow" points="538,540 578,540 558,518"/>
+  <rect class="exit" x="550" y="486" width="16" height="12" rx="2"/><polygon points="554,489 554,495 561,492" fill="#fff"/>
+
+  <!-- ===================== 외벽 윤곽 (강조) ===================== -->
+  <path class="wall" d="M86,274 L86,195 L968,195 L968,274"/>
+  <path class="wall" d="M107,304 L968,304 M107,304 L107,394 M968,304 L968,394"/>
+  <path class="wall" d="M107,394 L404,394 M712,394 L968,394"/>
+  <path class="wall" d="M494,394 L494,560 L538,560 M578,560 L622,560 L622,394"/>
+  <path class="wall" d="M538,560 L538,542 M578,560 L578,542"/>
+</svg>

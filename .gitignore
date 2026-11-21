@@ -1,0 +1,27 @@
+# 용량·보안·개인정보 — 이 저장소에 넣지 않음
+.venv/
+venv/
+__pycache__/
+*.pyc
+build/
+install/
+log/
+logs/
+bus/
+*.bin
+*.onnx
+*.gguf
+*.pt
+*.pth
+*.wav
+*.mp3
+*.mp4
+*.bag
+*.db3
+.openai_key
+.rrn_key
+.admin_pin
+.env
+*.key
+experiments/sim/*/bus/
+experiments/sim/*/roslog/

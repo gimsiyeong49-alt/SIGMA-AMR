@@ -1,0 +1,38 @@
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+*.log
+.DS_Store
+
+# ---- 시크릿/키 (커밋 금지) ----
+.env
+.env.*
+*.env
+secrets.*
+*.key
+*.pem
+*_credentials.json
+*service-account*.json
+# OpenAI/기타 API 키는 코드에 두지 말고 env 또는 gitignore된 .env 로만
+
+# 런타임 로그(whisper 등)
+logs/
+
+# Claude Code 개인 로컬 설정(허용목록 등) — 공유 안 함
+.claude/settings.local.json
+
+# 키오스크용 크로미움 독립 프로필
+.chrome-kiosk/
+.openai_key
+
+# 환자 데이터셋/대기명단 (PII·런타임 데이터, 커밋 금지)
+data/
+
+# 관리자 PIN (gitignore)
+.admin_pin
+
+# 주민번호 암호화 키(기기 로컬, 커밋 금지)
+.rrn_key

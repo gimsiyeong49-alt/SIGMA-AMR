@@ -1,0 +1,411 @@
+amcl:
+  ros__parameters:
+    use_sim_time: false
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_footprint"
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: "map"
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 100.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    odom_frame_id: "odom"
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    robot_model_type: "differential"
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.25
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+    scan_topic: /scan_multi
+
+amcl_map_client:
+  ros__parameters:
+    use_sim_time: false
+
+amcl_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: false
+    global_frame: map
+    robot_base_frame: base_footprint
+    odom_topic: /odom
+    default_bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    enable_groot_monitoring: true
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+    plugin_lib_names:
+      - nav2_compute_path_to_pose_action_bt_node
+      - nav2_compute_path_through_poses_action_bt_node
+      - nav2_follow_path_action_bt_node
+      - nav2_back_up_action_bt_node
+      - nav2_spin_action_bt_node
+      - nav2_wait_action_bt_node
+      - nav2_clear_costmap_service_bt_node
+      - nav2_is_stuck_condition_bt_node
+      - nav2_goal_reached_condition_bt_node
+      - nav2_goal_updated_condition_bt_node
+      - nav2_initial_pose_received_condition_bt_node
+      - nav2_reinitialize_global_localization_service_bt_node
+      - nav2_rate_controller_bt_node
+      - nav2_distance_controller_bt_node
+      - nav2_speed_controller_bt_node
+      - nav2_truncate_path_action_bt_node
+      - nav2_goal_updater_node_bt_node
+      - nav2_recovery_node_bt_node
+      - nav2_pipeline_sequence_bt_node
+      - nav2_round_robin_node_bt_node
+      - nav2_transform_available_condition_bt_node
+      - nav2_time_expired_condition_bt_node
+      - nav2_distance_traveled_condition_bt_node
+      - nav2_single_trigger_bt_node
+      - nav2_is_battery_low_condition_bt_node
+      - nav2_navigate_through_poses_action_bt_node
+      - nav2_navigate_to_pose_action_bt_node
+      - nav2_remove_passed_goals_action_bt_node
+      - nav2_planner_selector_bt_node
+      - nav2_controller_selector_bt_node
+      - nav2_goal_checker_selector_bt_node
+
+bt_navigator_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 10.0   # 2026-11-11: 20 → 10. 실측 12.4Hz·주기 미달 1835회(CPU 포화) → 지킬 수 있는 주기로
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.0
+    min_theta_velocity_threshold: 0.001
+    failure_tolerance: 0.3
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+    controller_plugins: ["FollowPath"]
+
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5
+      # 2026-11-15: 10 → 20초. 목적지에서 뒤돌아 복귀 출발할 때(제자리 약 180°) 회전 최고 0.30 rad/s 라 최소 10.5초 걸려
+      #   매번 10초째 '진행 없음'으로 회전이 끊김(녹화 11-12 23:53·로그 11-13 03:41 각 1회, 03:55 는 8회 반복+복구 3번).
+      #   이 Nav2(Galactic) 판정은 위치 이동만 보고 회전은 진행으로 안 침. 대가: 진짜 막혔을 때 복구가 10초 늦게 시작
+      movement_time_allowance: 20.0
+
+    general_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.45
+      yaw_goal_tolerance: 3.14159
+
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+      debug_trajectory_details: false   # 2026-11-11: 후보 궤적 상세 발행 끔(CPU)
+      min_vel_x: 0.0
+      min_vel_y: 0.0
+      # 2026-11-12: 모터 환산 계수 보정(실제 속도 = 명령 속도) 후 값. 보정 전엔 실제가 명령의 15.6%였음
+      #   (설정 0.6 → 실제 약 0.09 m/s, 그 전 설정 1.0 → 실제 0.15 m/s). 아래 속도·가속도는 이제 '실제 값'
+      max_vel_x: 0.23         # 실제 0.23 m/s(보정 전 실제 최고 0.09의 약 2.5배). 2026-11-12: 0.30 → 0.23(빠르고 좌우 흔들림 큼)
+      max_vel_y: 0.0
+      max_vel_theta: 0.30     # 실제 0.30 rad/s(보정 전 실제 약 0.12의 2.5배). 0.35 → 0.30
+      min_speed_xy: 0.0
+      max_speed_xy: 0.23
+      min_speed_theta: 0.0
+      acc_lim_x: 0.25         # 실제 가속 0.25 m/s²(0.3 → 0.25, 출발 부드럽게)
+      acc_lim_y: 0.0
+      acc_lim_theta: 0.4      # 2026-11-12: 0.6 → 0.4 — 좌우 흔들림(회전 방향을 급히 바꿈) 완화
+      decel_lim_x: -0.3       # 2026-11-13: -0.5 → -0.3 (급정지 완화, 모터 드라이버 완만화 한도와 맞춤)
+      decel_lim_y: 0.0
+      decel_lim_theta: -0.6
+      vx_samples: 20           # 2026-11-11: 30 → 20 (사각형 footprint 검사 비용 상쇄, CPU)
+      vy_samples: 5
+      vtheta_samples: 20
+      sim_time: 1.2            # 충분한 시뮬레이션 시간
+      linear_granularity: 0.05
+      angular_granularity: 0.025
+      transform_tolerance: 0.2
+      xy_goal_tolerance: 0.25
+      trans_stopped_velocity: 0.25
+      short_circuit_trajectory_evaluation: true
+      stateful: true
+      critics:
+        - "RotateToGoal"
+        - "Oscillation"
+        - "ObstacleFootprint"   # 2026-11-11: BaseObstacle(중심점만 검사) → 사각형 차체 전체 검사
+        - "GoalAlign"
+        - "PathAlign"
+        - "PathDist"
+        - "GoalDist"
+      ObstacleFootprint.scale: 0.2   # 2026-11-11: 0.1 → 0.2 (장애물 근처 비용 조금 더 반영)
+      PathAlign.scale: 16.0    # 경로 추종
+      PathAlign.forward_point_distance: 0.4   # 2026-11-11: 0.1 → 0.3, 2026-11-12: → 0.4 (조금 더 앞을 보고 따라가 좌우 흔들림 완화)
+      GoalAlign.scale: 12.0
+      GoalAlign.forward_point_distance: 0.4
+      PathDist.scale: 16.0     # 경로 추종
+      GoalDist.scale: 12.0
+      RotateToGoal.scale: 16.0  # 원래값 복원
+      RotateToGoal.slowing_factor: 2.0  # 낮춤 (3 → 2): 목표 근처서 덜 느려짐
+      RotateToGoal.lookahead_time: -1.0
+
+controller_server_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 10.0
+      publish_frequency: 5.0
+      global_frame: odom
+      robot_base_frame: base_footprint
+      use_sim_time: false
+      rolling_window: true
+      width: 5
+      height: 5
+      resolution: 0.05
+      # 2026-11-11: 원(robot_radius 0.4) → 실제 차체 사각형 0.9×0.7 + 사방 5cm. 모서리(0.57m)가 원 밖으로 튀어나와
+      #   "Nav2는 안 닿는다고 판단했는데 모서리가 장애물에 걸린" 근접 5건(rosbag nav_20261111_221640)
+      footprint: "[[0.50, 0.40], [0.50, -0.40], [-0.50, -0.40], [-0.50, 0.40]]"
+      plugins:
+        - "obstacle_layer"
+        # - "voxel_layer"   # 2026-11-11: obstacle_layer 와 같은 /scan_multi 를 한 번 더 처리하던 중복 → 끔(CPU)
+        - "inflation_layer"
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0   # 2026-11-11: 1.0 → 3.0 (비용이 넓게 고르게 높던 것을 장애물 가까이에 집중)
+        inflation_radius: 0.75     # 2026-11-11: 0.60 → 0.75 (사각형 외접 반경 0.64보다 크게)
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        observation_sources: scan people_cloud
+        scan:
+          topic: /scan_multi
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "LaserScan"
+        people_cloud:
+          topic: /people_obstacles
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "PointCloud2"
+          obstacle_max_range: 4.0
+          obstacle_min_range: 0.3
+          raytrace_max_range: 4.0
+          raytrace_min_range: 0.0
+
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: true
+        publish_voxel_map: true
+        origin_z: 0.0
+        z_resolution: 0.05
+        z_voxels: 16
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /scan_multi
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+
+      static_layer:
+        map_subscribe_transient_local: true
+
+      always_send_full_costmap: true
+
+local_costmap_client:
+  ros__parameters:
+    use_sim_time: false
+
+local_costmap_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_footprint
+      use_sim_time: false
+      # 2026-11-11: robot_radius 0.3(실제 반폭 0.35보다 작음) → 실제 차체 사각형 + 5cm
+      footprint: "[[0.50, 0.40], [0.50, -0.40], [-0.50, -0.40], [-0.50, 0.40]]"
+      resolution: 0.05
+      track_unknown_space: true
+      plugins:
+        - "static_layer"
+        - "obstacle_layer"
+        # - "voxel_layer"   # 2026-11-11: obstacle_layer 와 같은 스캔 중복 → 끔(CPU)
+        - "inflation_layer"
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        observation_sources: scan people_cloud
+        scan:
+          topic: /scan_multi
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+        people_cloud:
+          topic: /people_obstacles
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "PointCloud2"
+          obstacle_max_range: 4.0
+          obstacle_min_range: 0.3
+          raytrace_max_range: 4.0
+          raytrace_min_range: 0.0
+
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: true
+        publish_voxel_map: true
+        origin_z: 0.0
+        z_resolution: 0.05
+        z_voxels: 16
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /scan_multi
+          max_obstacle_height: 2.0
+          clearing: true
+          marking: true
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.70     # 2026-11-11: 0.55 → 0.70 (사각형 외접 반경 0.64보다 크게)
+
+      always_send_full_costmap: true
+
+global_costmap_client:
+  ros__parameters:
+    use_sim_time: false
+
+global_costmap_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+map_server:
+  ros__parameters:
+    use_sim_time: false
+    yaml_filename: "map.yaml"
+
+map_saver:
+  ros__parameters:
+    use_sim_time: false
+    save_map_timeout: 5.0
+    free_thresh_default: 0.25
+    occupied_thresh_default: 0.65
+    map_subscribe_transient_local: true
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 5.0   # 2026-11-11: 20 → 5 (경고 기준값. 실제 재계획 주기는 BT가 정함)
+    use_sim_time: false
+    planner_plugins: ["GridBased"]
+
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+
+planner_server_rclcpp_node:
+  ros__parameters:
+    use_sim_time: false
+
+recoveries_server:
+  ros__parameters:
+    costmap_topic: local_costmap/costmap_raw
+    footprint_topic: local_costmap/published_footprint
+    cycle_frequency: 10.0
+    recovery_plugins: ["spin", "backup", "wait"]
+
+    spin:
+      plugin: "nav2_recoveries/Spin"
+
+    backup:
+      plugin: "nav2_recoveries/BackUp"
+      backup_dist: 0.20
+      backup_speed: 0.08
+
+    wait:
+      plugin: "nav2_recoveries/Wait"
+
+    global_frame: odom
+    robot_base_frame: base_footprint
+    transform_timeout: 0.1
+    use_sim_time: false
+    simulate_ahead_time: 2.0
+    # 2026-11-12: 모터 환산 보정으로 명령 = 실제가 됨 → 예전 값(1.0·0.4·3.2)은 실제로 6배 빨라지므로 낮춤
+    max_rotational_vel: 0.5
+    min_rotational_vel: 0.2
+    rotational_acc_lim: 1.0
+
+robot_state_publisher:
+  ros__parameters:
+    use_sim_time: false
+
+waypoint_follower:
+  ros__parameters:
+    loop_rate: 2000
+    stop_on_failure: false
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+      enabled: true
+      waypoint_pause_duration: 200

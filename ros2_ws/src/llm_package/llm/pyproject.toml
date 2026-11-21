@@ -1,0 +1,14 @@
+[project]
+name = "llm"
+version = "0.4.0"
+description = "STT watcher, map label matcher, OpenAI responder, and persistent Nav2 goal manager"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+llm = "llm.cli:main"
+llm-watch = "llm.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

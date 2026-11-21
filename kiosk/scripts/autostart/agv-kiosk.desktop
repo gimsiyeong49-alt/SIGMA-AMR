@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=AGV Kiosk
+Comment=전원 ON 시 백엔드 자동 기동 후 음성인식 화면 전체화면
+Exec=/home/wjs/.local/bin/agv-kiosk-launch.sh
+Terminal=false
+X-GNOME-Autostart-enabled=true
+NoDisplay=true

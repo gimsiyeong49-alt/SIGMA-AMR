@@ -1,0 +1,16 @@
+laserscan_multi_merger:
+  ros__parameters:
+    destination_frame: "lidar_lMer"
+    cloud_destination_topic: "/merged_cloud"
+    scan_destination_topic: "/scan_multi"
+    laserscan_topics: "/lidar_F/scan_filtered /lidar_R/scan_filtered"
+    angle_min: -3.15
+    angle_max: 3.15
+    angle_increment: 0.0058
+    scan_time: 0.03333
+    range_min: 0.0
+    range_max: .inf
+    # 2026-11-11: 두 LiDAR 스캔 시각 허용 차이 0.05 → 0.10초. 기본값에선 "Unsynchronized scans … Dropping" 으로
+    #   10분에 301번 스캔을 버림(각 LiDAR 약 12Hz라 주기 83ms > 허용 50ms). 설치된 병합 프로그램이 지원하는 파라미터
+    max_sync_slop: 0.10
+    

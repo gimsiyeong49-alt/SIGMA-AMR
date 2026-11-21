@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>병원 안내 로봇 (프로토타입)</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    // 의료진·콜보드 주소면 페이지를 그리기 전에 표시 → 환자 첫 화면이 잠깐 보였다 바뀌는 깜빡임 방지.
+    // app.js의 첫 showScreen()에서 이 표시를 지운다.
+    if (/[?&](nurse|admin|doctor|callboard)(=|&|$)/.test(location.search)) {
+      document.documentElement.classList.add('staff-boot');
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+
+    <!-- 환자 화면 공통 도구(우상단): 음량 조절 + 언어(국기). 의료진·콜보드 화면에선 숨김.
+         음량은 첫 화면으로 돌아가면 기본(3)으로. 언어는 누르면 UI 글자·음성·답변 언어 전환 -->
+    <div id="top-tools" class="top-tools">
+      <div id="vol-ctrl" class="vol-ctrl">
+        <button id="vol-toggle" class="vol-toggle" type="button" aria-expanded="false">
+          <svg class="vol-icon" viewBox="0 0 30 24" aria-hidden="true">
+            <g id="vol-g">
+              <path class="vol-spk" d="M4 9h4l6-5v16l-6-5H4z"/>
+              <path class="vol-w vol-w1" d="M17.5 9.5a3.5 3.5 0 0 1 0 5"/>
+              <path class="vol-w vol-w2" d="M20 7a7 7 0 0 1 0 10"/>
+              <path class="vol-w vol-w3" d="M22.5 4.5a10.5 10.5 0 0 1 0 15"/>
+              <path class="vol-x" d="M18 8.5l7 7M25 8.5l-7 7"/>
+            </g>
+          </svg>
+        </button>
+        <!-- 펼침(국기와 같은 방식): 버튼 아래로 세로 슬라이더(위=100, 아래=0) + 숫자 -->
+        <div id="vol-panel" class="vol-panel">
+          <div id="vol-slider" class="vol-slider" role="slider" tabindex="0" aria-orientation="vertical"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="60">
+            <div class="vol-track"><div class="vol-fill"></div><div class="vol-thumb"></div></div>
+          </div>
+          <output id="vol-val" class="vol-val">60</output>
+        </div>
+      </div>
+      <div class="lang-bar">
+        <button class="lang-flag" data-lang="ko" type="button" title="한국어">🇰🇷</button>
+        <button class="lang-flag" data-lang="en" type="button" title="English">🇺🇸</button>
+        <button class="lang-flag" data-lang="ja" type="button" title="日本語">🇯🇵</button>
+        <button class="lang-flag" data-lang="zh" type="button" title="中文">🇨🇳</button>
+      </div>
+    </div>
+
+    <!-- ===== 1. 음성 인식 시작 화면 ===== -->
+    <section id="voice-screen" class="screen active">
+
+      <h1 class="voice-title" data-i18n="home.title">무엇을 도와드릴까요?</h1>
+
+      <!-- 1단계: 홈 메뉴 — 큰 박스 2개(접수 왼쪽 · 위치 오른쪽) -->
+      <div id="home-menu" class="home-menu">
+        <button id="intake-btn" class="home-box" type="button">
+          <span class="home-box-icon" aria-hidden="true">📋</span>
+          <span class="home-box-title" data-i18n="home.intake">접수 안내</span>
+        </button>
+        <button id="loc-btn" class="home-box" type="button">
+          <span class="home-box-icon" aria-hidden="true">🧭</span>
+          <span class="home-box-title" data-i18n="home.location">위치 안내</span>
+        </button>
+      </div>
+
+      <!-- 2단계: 위치 안내용 마이크(처음엔 숨김. 위치 안내 선택 시 표시) -->
+      <div id="mic-area" hidden>
+        <button id="mic-btn" class="mic-btn" type="button" aria-label="음성 인식 시작">
+          <span class="mic-ico">🎤</span>
+        </button>
+        <p class="voice-hint" data-i18n="mic.hint">버튼을 누르고 가고 싶은 곳을 말씀하세요</p>
+
+        <!-- 개발용(마이크 없이 위치 테스트): URL 에 ?dev=1 일 때만 표시. -->
+        <form id="dev-input" class="dev-input" hidden>
+          <input id="dev-text" type="text" autocomplete="off"
+                 placeholder="개발용 · 예) 내과 어디예요" />
+          <button type="submit">질문</button>
+        </form>
+
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.back">뒤로</button>
+      </div>
+    </section>
+
+    <!-- ===== 2. 듣는 중 화면 ===== -->
+    <section id="listening-screen" class="screen">
+      <div class="wave" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <h2 class="listening-title" data-i18n="listening.title">듣고 있어요…</h2>
+
+      <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.cancel">취소</button>
+    </section>
+
+    <!-- ===== 2-d. 접수: 환자 정보 입력 화면 (초진/재진) ===== -->
+    <section id="form-screen" class="screen">
+      <div id="form-steps" class="steps flow-steps"></div>
+      <h2 id="form-title" class="listening-title"></h2>
+      <form id="patient-form" class="patient-form">
+        <input id="f-name" type="text" autocomplete="off" placeholder="이름" data-i18n-ph="ph.name" />
+        <!-- 주민번호: 숫자당 한 칸(세그먼트). 재진은 뒤 6칸이 * 고정. JS가 칸을 생성. -->
+        <div id="f-rrn" class="rrn-seg" role="group" aria-label="주민등록번호"></div>
+        <div id="f-contact-row">
+          <input id="f-contact" type="text" autocomplete="off" inputmode="tel"
+                 placeholder="연락처 (예: 010-1234-5678)" data-i18n-ph="ph.contact" />
+        </div>
+        <button type="submit" data-i18n="btn.confirm">확인</button>
+      </form>
+      <p id="form-msg" class="form-msg"></p>
+      <div class="nav-row">
+        <button id="form-back" class="btn-ghost" type="button" data-i18n="btn.back">뒤로</button>
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.home">처음으로</button>
+      </div>
+    </section>
+
+    <!-- ===== 관리자 PIN 게이트 (?nurse=1·?doctor=1 공용, PIN 설정 시) ===== -->
+    <section id="admin-gate" class="screen">
+      <h2 class="listening-title">🔒 관리자 인증</h2>
+      <form id="gate-form" class="dev-input">
+        <input id="gate-pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN 입력" />
+        <button type="submit">확인</button>
+      </form>
+      <p id="gate-msg" class="disclaimer"></p>
+    </section>
+
+    <!-- ===== 관리자(간호사): 탭 3페이지 (URL ?nurse=1, 예전 ?admin=1도 호환) ===== -->
+    <section id="admin-screen" class="screen">
+      <h2 class="listening-title">관리자 (간호사 전용)</h2>
+      <p id="admin-summary" class="voice-hint"></p>
+
+      <!-- 탭: 환자 데이터셋 / 예약 명단 / 대기 현황 -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-page="patients" type="button">환자 데이터셋</button>
+        <button class="admin-tab" data-page="reservations" type="button">예약 명단</button>
+        <button class="admin-tab" data-page="waitlist" type="button">대기 현황</button>
+      </div>
+
+      <!-- 페이지 1: 환자 데이터셋 -->
+      <div id="page-patients" class="admin-page">
+        <div class="admin-sort" data-for="patients">
+          <span>정렬</span>
+          <button class="sort-btn active" data-sort="name" type="button">이름순</button>
+          <button class="sort-btn" data-sort="rrn" type="button">주민번호순</button>
+          <button class="sort-btn" data-sort="contact" type="button">전화번호순</button>
+        </div>
+        <div id="admin-patients" class="admin-patients"></div>
+      </div>
+
+      <!-- 페이지 2: 예약 명단 -->
+      <div id="page-reservations" class="admin-page" hidden>
+        <form id="reservation-form" class="admin-resv">
+          <span class="admin-resv-label">예약 등록</span>
+          <input id="adm-name" type="text" autocomplete="off" placeholder="환자 이름" />
+          <input id="adm-rrn" type="text" autocomplete="off" inputmode="numeric" maxlength="14" placeholder="주민번호 (숫자만)" />
+          <select id="adm-dept"><option value="">진료과 선택</option></select>
+          <input id="adm-date" type="date" autocomplete="off" title="예약 날짜" />
+          <input id="adm-time" type="time" autocomplete="off" step="600" title="예약 시간" />
+          <span class="admin-resv-break" aria-hidden="true"></span>
+          <input id="adm-symptom" type="text" autocomplete="off" placeholder="다음 예약 증상/사유 (예: 정기검진, 배탈·설사 증상 처방 후 재진료)" />
+          <button type="submit">예약 저장</button>
+        </form>
+        <div class="admin-sort" data-for="reservations">
+          <span>정렬</span>
+          <button class="sort-btn active" data-sort="name" type="button">이름순</button>
+          <button class="sort-btn" data-sort="rrn" type="button">주민번호순</button>
+          <button class="sort-btn" data-sort="contact" type="button">전화번호순</button>
+        </div>
+        <div id="admin-reservations" class="admin-reservations"></div>
+      </div>
+
+      <!-- 페이지 3: 대기 현황 -->
+      <div id="page-waitlist" class="admin-page" hidden>
+        <div id="admin-body" class="admin-body"></div>
+      </div>
+
+      <button id="admin-refresh" class="btn-ghost" type="button">새로고침</button>
+    </section>
+
+    <!-- ===== 의사용 화면 (URL ?doctor=1 → PIN → 진료과 선택) — 한국어 고정 ===== -->
+    <section id="doctor-screen" class="screen">
+      <h2 class="listening-title">관리자 (의사 전용)</h2>
+      <!-- 진료과 선택 -->
+      <div id="doctor-dept-select">
+        <p class="voice-hint">진료과를 선택하세요</p>
+        <div id="doctor-dept-btns" class="doctor-dept-btns"></div>
+      </div>
+      <!-- 대기 목록 -->
+      <div id="doctor-queue" hidden>
+        <div class="doctor-head">
+          <span id="doctor-dept-name" class="doctor-dept-name"></span>
+          <button id="doctor-switch" class="btn-ghost" type="button">진료과 변경</button>
+        </div>
+        <div id="doctor-active" class="doctor-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== 콜보드: 대기실 공용 모니터 (URL ?callboard=1, 공개·순번만) ===== -->
+    <section id="callboard-screen" class="screen">
+      <h1 class="callboard-title">🔔 진료 호출 안내</h1>
+      <div id="callboard-body" class="callboard-body"></div>
+    </section>
+
+    <!-- ===== 2-c. 수속 안내: 증상/진료과 입력 화면 (S-04) ===== -->
+    <section id="intake-screen" class="screen">
+      <div id="intake-steps" class="steps flow-steps"></div>
+      <h2 class="listening-title" data-i18n="interview.title">증상을 설명해주세요</h2>
+      <!-- AI 대화형 문진: 고정 높이 대화창. 새 메시지가 아래에 붙고 오래된 메시지는 위로 밀려 가려짐 -->
+      <div class="chat-panel">
+        <div id="interview-log" class="chat-log" aria-live="polite"></div>
+        <!-- 음성 전용(2026-10-13): 지금 무엇을 하는지(안내 중/듣는 중/확인 중) 상태 표시 -->
+        <div id="iv-mic" class="chat-mic" data-state="idle" role="status" aria-live="polite">
+          <span class="chat-mic-ico" aria-hidden="true"></span><span class="chat-mic-text"></span>
+        </div>
+        <!-- 타자 입력은 숨김(음성 전용). 마이크 없는 노트북 시험용으로만 ?dev=1 일 때 표시 -->
+        <form id="intake-form" class="chat-input" hidden>
+          <input id="intake-text" type="text" autocomplete="off" placeholder="예) 머리가 아프고 열이 나요" data-i18n-ph="ph.symptom" />
+          <button type="submit" data-i18n="intake.submit">입력</button>
+        </form>
+      </div>
+      <div class="nav-row">
+        <button id="intake-back" class="btn-ghost" type="button" data-i18n="btn.back">뒤로</button>
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.home">처음으로</button>
+      </div>
+    </section>
+
+    <!-- ===== 2-b. 재질문 화면 (못 찾음 / 저신뢰 확인 / 인식 실패) ===== -->
+    <section id="retry-screen" class="screen">
+      <!-- 접수 흐름에서 쓰일 때만 스텝 표시(위치 안내 흐름에선 비움) -->
+      <div id="retry-steps" class="steps flow-steps"></div>
+      <h2 id="retry-msg" class="listening-title"></h2>
+      <!-- 문진 종합 시 환자에게 보여줄 증상 리캡(환자 언어). 비면 숨김 -->
+      <p id="retry-recap" class="interview-recap"></p>
+      <div id="retry-choices" class="demo-chips"></div>
+      <p id="retry-note" class="disclaimer"></p>
+      <div class="nav-row">
+        <!-- 뒤로: 호출측이 되돌아갈 곳을 넘겨줄 때만 표시(현재 문진 결과 화면 → 증상 입력) -->
+        <button id="retry-back" class="btn-ghost" type="button" data-i18n="btn.back" hidden>뒤로</button>
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.home">처음으로</button>
+      </div>
+    </section>
+
+    <!-- ===== 2-e. 응급 분기 화면 (트리아지·접수 안 함) ===== -->
+    <section id="emergency-screen" class="screen">
+      <div class="emg-icon" aria-hidden="true">🚨</div>
+      <h1 id="emg-title" class="emg-title"></h1>
+      <p id="emg-sub" class="emg-sub"></p>
+      <div class="emg-btns">
+        <button id="emg-call" class="btn-emg" type="button"></button>
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.home">처음으로</button>
+      </div>
+    </section>
+
+    <!-- ===== 2-f. 환자 대기 현황 화면 (접수 완료 후) ===== -->
+    <section id="wait-screen" class="screen">
+      <div id="wait-steps" class="steps flow-steps"></div>
+      <h2 id="wait-title" class="listening-title"></h2>
+      <!-- 병원 번호표 형식: 접수번호 / 큰 숫자 / 대기인수 -->
+      <div id="wait-ticket" class="wait-ticket">
+        <span id="wait-ticket-label" class="wait-ticket-label"></span>
+        <span id="wait-ticket-num" class="wait-ticket-num"></span>
+      </div>
+      <p id="wait-ahead" class="wait-ahead"></p>
+      <p id="wait-status" class="wait-status"></p>
+      <div class="wait-btns">
+        <button id="wait-guide" class="btn-secondary" type="button"></button>
+        <button class="btn-ghost" data-nav="voice-screen" type="button" data-i18n="btn.home">처음으로</button>
+      </div>
+    </section>
+
+    <!-- ===== 3. 결과(지도) 화면 ===== -->
+    <section id="result-screen" class="screen">
+      <div class="map-wrap" id="map-wrap">
+        <img id="map-img" src="assets/flat_map_guide.png" alt="안내도" />
+        <div id="floor-badge" class="floor-badge"></div>
+        <div id="hl" class="highlight"></div>
+      </div>
+      <div class="result-panel">
+        <p id="result-banner" class="result-banner"></p>
+        <p id="confirm-q" class="confirm-q"></p>
+        <div class="confirm-btns">
+          <button id="yes-btn" class="btn-yes" type="button">네</button>
+          <button id="no-btn" class="btn-no" type="button">아니오</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. 이동 중 화면 ===== -->
+    <section id="moving-screen" class="screen">
+      <!-- 결과 화면과 같은 안내도 위에서 로봇 머리가 복도를 따라 이동한다.
+           위치는 실제 진행률(남은 거리 기반)로 정해지고, 경로는 모식이다. -->
+      <div class="map-wrap" id="move-map-wrap">
+        <img id="move-map-img" src="assets/flat_map_guide.png" alt="안내도" />
+        <div id="move-floor-badge" class="floor-badge"></div>
+        <div id="move-hl" class="highlight"></div>
+        <div id="robot-marker" class="robot-marker">🤖</div>
+      </div>
+      <h2 id="moving-msg" class="moving-msg">이동합니다</h2>
+      <p id="moving-sub" class="moving-sub"></p>
+      <button id="done-btn" class="btn-ghost hidden" type="button">처음으로</button>
+    </section>
+
+    <!-- 로딩(확인 중) 오버레이 -->
+    <div id="loading-modal" class="idle-modal" hidden>
+      <div class="idle-box">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="loading-msg" class="idle-msg"></p>
+      </div>
+    </div>
+
+    <!-- 무조작 자동 리셋 확인 오버레이 -->
+    <div id="idle-modal" class="idle-modal" hidden>
+      <div class="idle-box">
+        <p id="idle-msg" class="idle-msg"></p>
+        <button id="idle-continue" class="btn-primary" type="button"></button>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

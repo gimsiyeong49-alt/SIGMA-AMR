@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/stt/__init__.py
+src/stt/cli.py
+src/stt/config.py
+src/stt/postprocess.py
+src/stt/recorder.py
+src/stt/transcriber.py
+src/stt/writer.py
+src/stt.egg-info/PKG-INFO
+src/stt.egg-info/SOURCES.txt
+src/stt.egg-info/dependency_links.txt
+src/stt.egg-info/entry_points.txt
+src/stt.egg-info/requires.txt
+src/stt.egg-info/top_level.txt
+src/stt/utils/__init__.py
+src/stt/utils/paths.py

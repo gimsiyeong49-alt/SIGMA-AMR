@@ -1,0 +1,55 @@
+cmake_minimum_required(VERSION 3.8)
+project(hospital_mission)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic -O2)
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
+
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(nav2_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(action_msgs REQUIRED)
+
+set(DEPS
+  rclcpp
+  rclcpp_action
+  nav2_msgs
+  geometry_msgs
+  std_msgs
+  action_msgs
+)
+
+include_directories(include)
+
+install(DIRECTORY
+  launch
+  config
+  map
+  rviz
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  src/vision_obstacle_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME vision_obstacle_node
+)
+
+install(PROGRAMS
+  src/vision_result_visualizer.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME vision_result_visualizer
+)
+
+install(PROGRAMS
+  src/nav_request_watcher.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME nav_request_watcher
+)
+
+ament_package()

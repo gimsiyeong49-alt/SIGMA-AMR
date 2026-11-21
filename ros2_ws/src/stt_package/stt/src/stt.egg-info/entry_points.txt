@@ -1,0 +1,2 @@
+[console_scripts]
+stt = stt.cli:main

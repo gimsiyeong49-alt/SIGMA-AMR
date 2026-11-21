@@ -1,0 +1,169 @@
+{"ev": "listen", "t": 1794768504.126, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1794768533.425, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1794768549.265, "loc": "internal", "typed": false, "speech_end": 1794768542.478}
+{"ev": "nav", "t": 1794768557.158, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794768722.781, "loc": "internal", "typed": false, "speech_end": 1794768719.879}
+{"ev": "listen", "t": 1794769052.002, "loc": "pain", "typed": false, "speech_end": 1794769045.065}
+{"ev": "listen", "t": 1794769067.675, "loc": "pain", "typed": false, "speech_end": 1794769063.282}
+{"ev": "listen", "t": 1794769091.345, "loc": null, "typed": false, "speech_end": 1794769086.934}
+{"ev": "recommend", "t": 1794769093.278, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794769091.399, "speech_end": 1794769086.934}
+{"ev": "register", "t": 1794769098.105, "dept": "internal"}
+{"ev": "listen", "t": 1794769582.75, "loc": null, "typed": false, "speech_end": 1794769577.813}
+{"ev": "listen", "t": 1794769601.479, "loc": null, "typed": false, "speech_end": 1794769597.148}
+{"ev": "recommend", "t": 1794769605.616, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794769603.023, "speech_end": 1794769597.148}
+{"ev": "register", "t": 1794769609.979, "dept": "internal"}
+{"ev": "listen", "t": 1794769650.688, "loc": null, "typed": false, "speech_end": 1794769646.01}
+{"ev": "listen", "t": 1794769671.844, "loc": null, "typed": false, "speech_end": 1794769667.52}
+{"ev": "recommend", "t": 1794769675.923, "src": "interview", "loc": "surgery", "emergency": false, "t_req": 1794769673.7, "speech_end": 1794769667.52}
+{"ev": "register", "t": 1794769679.662, "dept": "surgery"}
+{"ev": "listen", "t": 1794769713.537, "loc": "wonmu", "typed": false, "speech_end": 1794769708.456}
+{"ev": "recommend", "t": 1794769717.13, "src": "interview", "loc": "wonmu", "emergency": false, "t_req": 1794769715.456, "speech_end": 1794769708.456}
+{"ev": "register", "t": 1794769722.127, "dept": "wonmu"}
+{"ev": "listen", "t": 1794769763.436, "loc": null, "typed": false, "speech_end": 1794769759.108}
+{"ev": "listen", "t": 1794769778.173, "loc": null, "typed": false, "speech_end": 1794769774.152}
+{"ev": "recommend", "t": 1794769783.329, "src": "interview", "loc": null, "emergency": false, "t_req": 1794769779.977, "speech_end": 1794769774.152}
+{"ev": "register", "t": 1794769795.474, "dept": "internal"}
+{"ev": "listen", "t": 1794769840.876, "loc": "pain", "typed": false, "speech_end": 1794769835.561}
+{"ev": "listen", "t": 1794769857.583, "loc": null, "typed": false, "speech_end": 1794769853.208}
+{"ev": "listen", "t": 1794769873.521, "loc": null, "typed": false, "speech_end": 1794769869.403}
+{"ev": "recommend", "t": 1794769876.08, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794769873.562, "speech_end": 1794769869.403}
+{"ev": "register", "t": 1794769880.722, "dept": "internal"}
+{"ev": "listen", "t": 1794770174.95, "loc": null, "typed": false, "speech_end": 1794770169.859}
+{"ev": "listen", "t": 1794770191.592, "loc": null, "typed": false, "speech_end": 1794770186.658}
+{"ev": "recommend", "t": 1794770196.357, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794770193.853, "speech_end": 1794770186.658}
+{"ev": "register", "t": 1794770199.398, "dept": "internal"}
+{"ev": "listen", "t": 1794770232.362, "loc": "pain", "typed": false, "speech_end": 1794770227.898}
+{"ev": "listen", "t": 1794770247.145, "loc": null, "typed": false, "speech_end": 1794770242.517}
+{"ev": "listen", "t": 1794770262.266, "loc": null, "typed": false, "speech_end": 1794770258.052}
+{"ev": "recommend", "t": 1794770264.551, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794770262.328, "speech_end": 1794770258.052}
+{"ev": "register", "t": 1794770267.322, "dept": "internal"}
+{"ev": "listen", "t": 1794770312.394, "loc": "pediatric", "typed": false, "speech_end": 1794770307.746}
+{"ev": "listen", "t": 1794770331.03, "loc": null, "typed": false, "speech_end": 1794770326.773}
+{"ev": "recommend", "t": 1794770334.625, "src": "interview", "loc": "pediatric", "emergency": false, "t_req": 1794770332.729, "speech_end": 1794770326.773}
+{"ev": "register", "t": 1794770337.753, "dept": "pediatric"}
+{"ev": "listen", "t": 1794770369.189, "loc": "pediatric", "typed": false, "speech_end": 1794770364.746}
+{"ev": "listen", "t": 1794770384.56, "loc": null, "typed": false, "speech_end": 1794770380.36}
+{"ev": "recommend", "t": 1794770388.755, "src": "interview", "loc": "pediatric", "emergency": false, "t_req": 1794770386.802, "speech_end": 1794770380.36}
+{"ev": "register", "t": 1794770391.642, "dept": "pediatric"}
+{"ev": "listen", "t": 1794770444.709, "loc": null, "typed": false, "speech_end": 1794770439.801}
+{"ev": "listen", "t": 1794770458.848, "loc": null, "typed": false, "speech_end": 1794770454.861}
+{"ev": "listen", "t": 1794770474.468, "loc": null, "typed": false, "speech_end": 1794770470.259}
+{"ev": "recommend", "t": 1794770478.024, "src": "interview", "loc": null, "emergency": false, "t_req": 1794770474.518, "speech_end": 1794770470.259}
+{"ev": "register", "t": 1794770484.326, "dept": "surgery"}
+{"ev": "listen", "t": 1794770602.515, "loc": null, "typed": false, "speech_end": 1794770597.817}
+{"ev": "listen", "t": 1794770625.822, "loc": null, "typed": false, "speech_end": 1794770621.095}
+{"ev": "recommend", "t": 1794770629.096, "src": "interview", "loc": "surgery", "emergency": false, "t_req": 1794770627.122, "speech_end": 1794770621.095}
+{"ev": "register", "t": 1794770633.51, "dept": "surgery"}
+{"ev": "listen", "t": 1794770666.189, "loc": null, "typed": false, "speech_end": 1794770661.482}
+{"ev": "listen", "t": 1794770690.241, "loc": null, "typed": false, "speech_end": 1794770685.436}
+{"ev": "recommend", "t": 1794770695.474, "src": "interview", "loc": "surgery", "emergency": false, "t_req": 1794770691.761, "speech_end": 1794770685.436}
+{"ev": "register", "t": 1794770698.024, "dept": "surgery"}
+{"ev": "listen", "t": 1794770739.955, "loc": "pain", "typed": false, "speech_end": 1794770734.641}
+{"ev": "listen", "t": 1794770758.937, "loc": "surgery", "typed": false, "speech_end": 1794770754.172}
+{"ev": "recommend", "t": 1794770763.097, "src": "interview", "loc": "surgery", "emergency": false, "t_req": 1794770760.563, "speech_end": 1794770754.172}
+{"ev": "register", "t": 1794770768.047, "dept": "pain"}
+{"ev": "listen", "t": 1794770800.536, "loc": "pain", "typed": false, "speech_end": 1794770796.019}
+{"ev": "listen", "t": 1794770818.456, "loc": "pain", "typed": false, "speech_end": 1794770813.534}
+{"ev": "recommend", "t": 1794770822.298, "src": "interview", "loc": "surgery", "emergency": false, "t_req": 1794770820.122, "speech_end": 1794770813.534}
+{"ev": "register", "t": 1794770825.11, "dept": "pain"}
+{"ev": "listen", "t": 1794770858.136, "loc": "wonmu", "typed": false, "speech_end": 1794770853.404}
+{"ev": "recommend", "t": 1794770861.975, "src": "interview", "loc": "wonmu", "emergency": false, "t_req": 1794770859.753, "speech_end": 1794770853.404}
+{"ev": "register", "t": 1794770864.073, "dept": "wonmu"}
+{"ev": "listen", "t": 1794770905.954, "loc": "pediatric", "typed": false, "speech_end": 1794770901.106}
+{"ev": "listen", "t": 1794770919.908, "loc": null, "typed": false, "speech_end": 1794770915.233}
+{"ev": "recommend", "t": 1794770923.418, "src": "interview", "loc": "pediatric", "emergency": false, "t_req": 1794770921.334, "speech_end": 1794770915.233}
+{"ev": "register", "t": 1794770925.599, "dept": "pediatric"}
+{"ev": "listen", "t": 1794770954.785, "loc": null, "typed": false, "speech_end": 1794770950.225}
+{"ev": "listen", "t": 1794770973.367, "loc": null, "typed": false, "speech_end": 1794770969.044}
+{"ev": "recommend", "t": 1794770976.649, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794770974.958, "speech_end": 1794770969.044}
+{"ev": "register", "t": 1794770980.677, "dept": "internal"}
+{"ev": "listen", "t": 1794771011.897, "loc": "pediatric", "typed": false, "speech_end": 1794771007.58}
+{"ev": "recommend", "t": 1794771015.739, "src": "interview", "loc": "pediatric", "emergency": false, "t_req": 1794771013.298, "speech_end": 1794771007.58}
+{"ev": "register", "t": 1794771017.966, "dept": "pediatric"}
+{"ev": "listen", "t": 1794771052.536, "loc": null, "typed": false, "speech_end": 1794771047.101}
+{"ev": "listen", "t": 1794771066.78, "loc": null, "typed": false, "speech_end": 1794771062.381}
+{"ev": "recommend", "t": 1794771072.684, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794771068.413, "speech_end": 1794771062.381}
+{"ev": "register", "t": 1794771075.152, "dept": "internal"}
+{"ev": "listen", "t": 1794771102.587, "loc": null, "typed": false, "speech_end": 1794771098.442}
+{"ev": "listen", "t": 1794771126.075, "loc": null, "typed": false, "speech_end": 1794771121.283}
+{"ev": "recommend", "t": 1794771133.1, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794771127.645, "speech_end": 1794771121.283}
+{"ev": "register", "t": 1794771136.689, "dept": "internal"}
+{"ev": "listen", "t": 1794771173.021, "loc": null, "typed": false, "speech_end": 1794771168.565}
+{"ev": "listen", "t": 1794771188.698, "loc": null, "typed": false, "speech_end": 1794771184.151}
+{"ev": "recommend", "t": 1794771193.849, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794771190.638, "speech_end": 1794771184.151}
+{"ev": "register", "t": 1794771196.528, "dept": "internal"}
+{"ev": "listen", "t": 1794771236.109, "loc": null, "typed": false, "speech_end": 1794771230.746}
+{"ev": "listen", "t": 1794771246.097, "loc": "internal", "typed": false, "speech_end": 1794771243.301}
+{"ev": "nav", "t": 1794771253.501, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794771467.858, "loc": "surgery", "typed": false, "speech_end": 1794771465.018}
+{"ev": "nav", "t": 1794771470.288, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794771736.787, "loc": "wonmu", "typed": false, "speech_end": 1794771733.904}
+{"ev": "nav", "t": 1794771741.249, "loc": "wonmu", "name": "산부인과"}
+{"ev": "listen", "t": 1794771983.419, "loc": "wonmu", "typed": false, "speech_end": 1794771978.517}
+{"ev": "nav", "t": 1794771985.278, "loc": "wonmu", "name": "산부인과"}
+{"ev": "listen", "t": 1794772210.597, "loc": "pediatric", "typed": false, "speech_end": 1794772207.627}
+{"ev": "nav", "t": 1794772214.151, "loc": "pediatric", "name": "소아청소년과"}
+{"ev": "listen", "t": 1794772807.061, "loc": null, "typed": false, "speech_end": 1794772801.201}
+{"ev": "nav", "t": 1794772812.841, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794773318.39, "loc": "surgery", "typed": false, "speech_end": 1794773315.59}
+{"ev": "nav", "t": 1794773320.278, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794773600.444, "loc": "internal", "typed": false, "speech_end": 1794773597.725}
+{"ev": "nav", "t": 1794773602.122, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794773787.451, "loc": "wonmu", "typed": false, "speech_end": 1794773781.506}
+{"ev": "nav", "t": 1794773789.29, "loc": "wonmu", "name": "산부인과"}
+{"ev": "listen", "t": 1794773994.499, "loc": null, "typed": false, "speech_end": 1794773988.299}
+{"ev": "nav", "t": 1794773997.807, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794774200.982, "loc": null, "typed": false, "speech_end": 1794774195.662}
+{"ev": "listen", "t": 1794774215.301, "loc": null, "typed": false, "speech_end": 1794774210.568}
+{"ev": "listen", "t": 1794774226.077, "loc": "pediatric", "typed": false, "speech_end": 1794774223.12}
+{"ev": "nav", "t": 1794774228.062, "loc": "pediatric", "name": "소아청소년과"}
+{"ev": "listen", "t": 1794774603.305, "loc": null, "typed": false, "speech_end": 1794774597.477}
+{"ev": "listen", "t": 1794774613.028, "loc": null, "typed": false, "speech_end": 1794774608.797}
+{"ev": "listen", "t": 1794774628.298, "loc": null, "typed": false, "speech_end": 1794774623.893}
+{"ev": "listen", "t": 1794774636.622, "loc": "surgery", "typed": false, "speech_end": 1794774633.781}
+{"ev": "nav", "t": 1794774640.156, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794989544.303, "loc": null, "typed": false, "speech_end": 1794989534.73}
+{"ev": "listen", "t": 1794989562.451, "loc": null, "typed": false, "speech_end": 1794989558.304}
+{"ev": "recommend", "t": 1794989567.248, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1794989563.935, "speech_end": 1794989558.304}
+{"ev": "register", "t": 1794989573.225, "dept": "internal"}
+{"ev": "nav", "t": 1794989582.127, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794990176.407, "loc": "surgery", "typed": false, "speech_end": 1794990173.732}
+{"ev": "nav", "t": 1794990183.258, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794990448.472, "loc": "toilet", "typed": false, "speech_end": 1794990445.138}
+{"ev": "listen", "t": 1794991158.935, "loc": "toilet", "typed": false, "speech_end": 1794991156.091}
+{"ev": "nav", "t": 1794991161.819, "loc": "toilet", "name": "화장실"}
+{"ev": "listen", "t": 1794995181.503, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1794996277.362, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1794996292.767, "loc": "internal", "typed": false, "speech_end": 1794996289.971}
+{"ev": "nav", "t": 1794996303.797, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794996551.781, "loc": "surgery", "typed": false, "speech_end": 1794996549.22}
+{"ev": "listen", "t": 1794996564.765, "loc": null, "typed": false, "speech_end": 1794996558.138}
+{"ev": "nav", "t": 1794996571.637, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794996762.642, "loc": "internal", "typed": false, "speech_end": 1794996759.889}
+{"ev": "nav", "t": 1794996764.713, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794996935.487, "loc": "internal", "typed": false, "speech_end": 1794996932.642}
+{"ev": "nav", "t": 1794996937.026, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794997131.097, "loc": "internal", "typed": false, "speech_end": 1794997128.331}
+{"ev": "nav", "t": 1794997132.656, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1794997312.275, "loc": "surgery", "typed": false, "speech_end": 1794997309.472}
+{"ev": "nav", "t": 1794997314.373, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794997577.283, "loc": "surgery", "typed": false, "speech_end": 1794997574.401}
+{"ev": "nav", "t": 1794997579.458, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794997834.084, "loc": null, "typed": false, "speech_end": 1794997827.493}
+{"ev": "nav", "t": 1794997861.329, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794998121.522, "loc": "surgery", "typed": false, "speech_end": 1794998119.003}
+{"ev": "nav", "t": 1794998123.068, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1794998409.274, "loc": "pediatric", "typed": false, "speech_end": 1794998406.242}
+{"ev": "nav", "t": 1794998411.232, "loc": "pediatric", "name": "소아청소년과"}
+{"ev": "listen", "t": 1795071184.38, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1795071232.279, "loc": null, "typed": false, "speech_end": null}
+{"ev": "listen", "t": 1795071286.532, "loc": "internal", "typed": false, "speech_end": 1795071279.775}
+{"ev": "nav", "t": 1795071299.448, "loc": "internal", "name": "내과"}
+{"ev": "listen", "t": 1795071487.993, "loc": "surgery", "typed": false, "speech_end": 1795071484.712}
+{"ev": "nav", "t": 1795071491.053, "loc": "surgery", "name": "외과"}
+{"ev": "listen", "t": 1795072975.217, "loc": null, "typed": false, "speech_end": 1795072968.123}
+{"ev": "listen", "t": 1795072996.868, "loc": null, "typed": false, "speech_end": 1795072992.372}
+{"ev": "recommend", "t": 1795073001.597, "src": "interview", "loc": "internal", "emergency": false, "t_req": 1795072999.106, "speech_end": 1795072992.372}
+{"ev": "register", "t": 1795073010.098, "dept": "internal"}
+{"ev": "listen", "t": 1795073026.997, "loc": "internal", "typed": false, "speech_end": 1795073024.184}
+{"ev": "nav", "t": 1795073035.427, "loc": "internal", "name": "내과"}

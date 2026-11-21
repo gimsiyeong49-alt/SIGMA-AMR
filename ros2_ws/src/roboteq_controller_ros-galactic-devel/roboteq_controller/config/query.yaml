@@ -1,0 +1,77 @@
+roboteq_controller_node:
+  ros__parameters:
+    serial_port: "/dev/ttyMD" # Udev rule to make a virtual port that's associated to specific hw
+    baudrate: 115200
+    cmd_vel_topic: "/cmd_vel"
+
+    closed_loop: true
+
+    # For differential drive control (dual channel controller)
+    diff_drive_mode: true
+    # 2026-11-12: 0.15 → 0.0234. rosbag(nav_20261111_221640) 실측으로 실제 속도/명령 속도 = 0.156(좌·우 바퀴·직진·회전 모두 같음)
+    #   → 명령보다 6.4배 느리게 움직였음. 0.15×0.156 = 0.0234. 실제 바퀴 둘레 0.6594 ÷ 감속비 약 28 과도 맞음(모터 RPM 기준 환산).
+    #   이제 /cmd_vel 속도 = 실제 속도. 이전 이력: 0.6594 → 0.15
+    wheel_circumference: 0.0234 # [m] 모터 1회전당 바퀴 이동 거리(실효값)
+    # 2026-11-13: 속도 완만화(모든 /cmd_vel 을 이 한도 안에서 따라감). 목표 도착 때 속도 0 이 한 번에 와서
+    #   급정지(실측 0.98 m/s²)하던 문제 대응. 0.23 m/s 에서 감속 0.3 이면 약 0.8초·9cm 에 걸쳐 멈춤.
+    #   명령이 cmd_timeout 초 넘게 안 오면(예: Nav2 이상) 완만하게 정지. 끄려면 smooth_enable: false
+    smooth_enable: true
+    max_lin_acc: 0.25   # [m/s²] 실제 값(모터 환산 보정 후)
+    max_lin_dec: 0.3
+    # 2026-11-15: 회전 0.6/0.8 → 1.5/2.0 — 제자리 회전 시작·방향 전환이 굼떠 '회전을 힘들어함'(사용자).
+    #   같은 날 밤 와리가리를 줄이려고 0.6/0.8 → 0.45/0.6 을 시험했으나 회전이 약해져 슬립이 잦음(사용자) → 1.5/2.0 으로 복귀.
+    #   (좌우 흔들림은 조금 더 있음 — 사용자가 이 버전 선택)
+    max_ang_acc: 1.5    # [rad/s²]
+    max_ang_dec: 2.0
+    cmd_timeout: 0.5    # [s]
+    smooth_rate: 20.0   # [Hz]
+    # 2026-11-15: 조이스틱 전용 입력 — 위 완만화(감속 0.3)가 조이스틱에도 걸려 L1 을 놓아도 한참 밀려가던 문제.
+    #   조이스틱(~/aml_joystick.sh, ~/pub_joycmd.py)은 joy_cmd_topic 으로 보내고, 여기선 빠른 한도로 따라감
+    #   (0.30 m/s 에서 약 0.3초·5cm 에 정지 = 완만화 전과 비슷). 조이스틱이 명령하는 동안(+멈출 때까지)은 /cmd_vel 무시.
+    #   조이스틱 신호가 joy_timeout 초 끊기면(블루투스 끊김 등) 같은 빠른 감속으로 정지.
+    joy_cmd_topic: "/cmd_vel_joy"
+    joy_lin_acc: 0.5    # [m/s²]
+    joy_lin_dec: 1.0
+    joy_ang_acc: 1.5    # [rad/s²]
+    joy_ang_dec: 2.0
+    joy_timeout: 0.5    # [s]
+    # 모든 입력(Nav2·복귀 정렬·조이스틱) 공통 안전 상한(실제 속도). Nav2 최고 0.23 m/s·0.30 rad/s, 조이스틱 0.30/0.75.
+    #   속도 보정(11-12) 전에 부풀려 둔 값(예: 조이스틱 2.0 m/s)이 어딘가 남아 있어도 이 이상은 안 나감. 0 이하면 제한 없음
+    # 2026-11-15: 컨트롤러 속도 PID — 읽어 보니 공장 기본값 KP=KI=KD=0(매뉴얼: 기본값 쓰지 말 것, 속도 모드는 P=0·I=1·D=0 부터).
+    #   게인 0 이면 속도가 모자라도 힘을 더 안 줘 느린 회전에서 멈췄다 튐(덜컹·슬립). 켜면 시작 때 RAM 에만 설정(전원 끄면 원래대로).
+    #   true 로 바꾸고 브링업(드라이버) 재시작 → 로그 '컨트롤러 설정(읽기만)' 의 KI 값으로 적용 확인
+    speed_pid_enable: false
+    speed_kp: 0.0
+    speed_ki: 1.0
+    speed_kd: 0.0
+    max_lin_vel: 0.5    # [m/s]
+    max_ang_vel: 1.0    # [rad/s]
+    track_width: 0.475 # [m]  0.6223 --> 0.475
+    max_rpm: 3000.0 # [rpm]
+    encoder_resolution: 1024
+
+    # For querying data from the motor controller
+    frequency: 50   #higher frequency (value is in ms)
+    query:
+      motor_amps : ?A 
+      motor_command : ?M
+      hall_count : ?Cb
+      hall_speed : ?BS
+      volts : ?V
+      feedback : ?F 
+      battery_amps : ?BA
+      power : ?P          
+      fault_flag : ?FF  
+      # motor_amps2 : ?MA
+      # motor_command2 : ?FM
+      # hall_count2 : ?FM
+      # hall_speed2 : ?FS
+      # volts2 : ?V
+      # feedback2 : ?rmp 
+      # battery_amps2 : ?PHA
+      # power2 : ?sns          
+      # fault_flag2 : ?S  
+      # status_flag : ?FS
+      # firmware_id : ?FID  
+      # encoder_count : ?C
+      # encoder_speed : ?S  
